@@ -41,6 +41,7 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
         return [
             $legal_task->id,
             $legal_task->title,
+            (!is_null($legal_task->ref_status->statusName) ? $legal_task->ref_status->statusName : ""),
             $legal_task->ref_status->statusName." - ".$legal_task->description,
             $legal_task->created_at,
             $legal_task->last_updated,
@@ -85,6 +86,7 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
         return [
             'Id',
             'Title/HWB',
+            'Status',
             'Description',
             'Created Date',
             'Last Update',
