@@ -22,10 +22,10 @@ Route::get('/test', function () {
 });
 
 Route::get('/report', function () {
-    return Task::with('category', 'assigned_to')
-    ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
-    ->where('created_at', '>=', '2021-11-11')
-    ->where('created_at', '<=', '2021-11-13')
-    ->get()
-    ->toArray();
+    $legal_task = Task::with('ref_category', 'ref_assigned_to')
+            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
+            ->where('created_at', '>=', Carbon::now()->subYears(1)->toDateString())
+            ->where('created_at', '<=', Carbon::now()->toDateString())
+            ->first();
+    dd($legal_task->ref_category->name);
 });

@@ -17,8 +17,8 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
 
     public function collection()
     {
-        if(Carbon::now()->endOfMonth()){
-            $legal_task = Task::with('category', 'assigned_to')
+        if(Carbon::now()->endOfMonth()->toDateString() == Carbon::now()->toDateString()){
+            $legal_task = Task::with('ref_cats', 'ref_assigned_to')
             ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
             ->where('created_at', '>=', Carbon::now()->startOfMonth()->toDateString())
             ->where('created_at', '<=', Carbon::now()->endOfMonth()->toDateString())
@@ -26,7 +26,7 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
 
             return $legal_task;
         } else {
-            $legal_task = Task::with('category', 'assigned_to')
+            $legal_task = Task::with('ref_cats', 'ref_assigned_to')
             ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
             ->where('created_at', '>=', Carbon::now()->subYears(1)->toDateString())
             ->where('created_at', '<=', Carbon::now()->toDateString())
@@ -42,29 +42,29 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
             $legal_task->id,
             $legal_task->title,
             $legal_task->description,
-            Date::dateTimeToExcel($legal_task->created_at),
-            Date::dateTimeToExcel($legal_task->last_updated),
-            $legal_task->category->name,
-            $legal_task->user->name,
+            $legal_task->created_at,
+            $legal_task->last_updated,
+            $legal_task->ref_assigned_to->name, // เป็นอะไรไม่รู้
+            $legal_task->ref_assigned_to->name,
             $legal_task->addonstatus->CAT,
             $legal_task->addonstatus->Agent,
             $legal_task->addonstatus->shift,
             $legal_task->addonstatus->consignee,
             $legal_task->addonstatus->refNo,
             $legal_task->addonstatus->preCaseNo, // พึ่งเพิ่มเข้ามาใหม่
-            Date::dateTimeToExcel($legal_task->addonstatus->preCaseDate),
-            Date::dateTimeToExcel($legal_task->addonstatus->preCaseCloseDate),
+            $legal_task->addonstatus->preCaseDate,
+            $legal_task->addonstatus->preCaseCloseDate,
             $legal_task->addonstatus->caseNo,
-            Date::dateTimeToExcel($legal_task->addonstatus->caseDate),
-            Date::dateTimeToExcel($legal_task->addonstatus->caseCloseDate), // สิ้นสุด
-            Date::dateTimeToExcel($legal_task->addonstatus->importDate),
+            $legal_task->addonstatus->caseDate,
+            $legal_task->addonstatus->caseCloseDate, // สิ้นสุด
+            $legal_task->addonstatus->importDate,
             $legal_task->addonstatus->chequeNo,
-            Date::dateTimeToExcel($legal_task->addonstatus->chequeDate),
+            $legal_task->addonstatus->chequeDate,
             $legal_task->addonstatus->amount,
             $legal_task->addonstatus->paidby,
             $legal_task->addonstatus->chequeStatus,
             $legal_task->addonstatus->dutyChequeNo,
-            Date::dateTimeToExcel($legal_task->addonstatus->dutyChequeDate),
+            $legal_task->addonstatus->dutyChequeDate,
             $legal_task->addonstatus->dutyAmount,
             $legal_task->addonstatus->dutyPaidby,
             $legal_task->addonstatus->dutyChequeStatus,

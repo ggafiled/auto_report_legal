@@ -30,31 +30,23 @@ class Task extends Model
         'updatedBy',
         'isDeleted'];
 
-    public function category()
+    public function ref_category()
     {
         return $this->hasOne('App\Models\Category', 'categoryId', 'category');
     }
 
-    public function assigned_to()
+    public function ref_assigned_to()
     {
         return $this->hasOne('App\Models\User', 'userId', 'assigned_to');
     }
 
-    public function assigned_by()
+    public function ref_assigned_by()
     {
         return $this->hasOne('App\Models\User', 'userId', 'assigned_by');
     }
 
-    public function setAddonstatusAttribute($value)
+    public function getAddonstatusAttribute($value)
     {
-        $properties = [];
-
-        foreach ($value as $array_item) {
-            if (!is_null($array_item['key'])) {
-                $properties[] = $array_item;
-            }
-        }
-
-        $this->attributes['properties'] = json_encode($properties);
+        return json_decode($value);
     }
 }
