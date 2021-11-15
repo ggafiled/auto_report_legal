@@ -18,7 +18,7 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
     public function collection()
     {
         if(Carbon::now()->endOfMonth()->toDateString() == Carbon::now()->toDateString()){
-            $legal_task = Task::with('ref_cats', 'ref_assigned_to')
+            $legal_task = Task::with('ref_category', 'ref_assigned_to')
             ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
             ->where('created_at', '>=', Carbon::now()->startOfMonth()->toDateString())
             ->where('created_at', '<=', Carbon::now()->endOfMonth()->toDateString())
@@ -26,7 +26,7 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
 
             return $legal_task;
         } else {
-            $legal_task = Task::with('ref_cats', 'ref_assigned_to')
+            $legal_task = Task::with('ref_category', 'ref_assigned_to')
             ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
             ->where('created_at', '>=', Carbon::now()->subYears(1)->toDateString())
             ->where('created_at', '<=', Carbon::now()->toDateString())
