@@ -18,16 +18,16 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
     public function collection()
     {
         if(Carbon::now()->endOfMonth()->toDateString() == Carbon::now()->toDateString()){
-            $legal_task = Task::with('ref_category', 'ref_assigned_to')
-            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
+            $legal_task = Task::with('ref_category', 'ref_assigned_to', 'ref_status')
+            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'status','addonstatus'])
             ->where('created_at', '>=', Carbon::now()->startOfMonth()->toDateString())
             ->where('created_at', '<=', Carbon::now()->endOfMonth()->toDateString())
             ->get();
 
             return $legal_task;
         } else {
-            $legal_task = Task::with('ref_category', 'ref_assigned_to')
-            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
+            $legal_task = Task::with('ref_category', 'ref_assigned_to', 'ref_status')
+            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'status','addonstatus'])
             ->where('created_at', '>=', Carbon::now()->subYears(1)->toDateString())
             ->where('created_at', '<=', Carbon::now()->toDateString())
             ->get();
@@ -41,42 +41,42 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
         return [
             $legal_task->id,
             $legal_task->title,
-            $legal_task->description,
+            $legal_task->ref_status->statusName." - ".$legal_task->description,
             $legal_task->created_at,
             $legal_task->last_updated,
-            $legal_task->ref_assigned_to->name, // เป็นอะไรไม่รู้
-            $legal_task->ref_assigned_to->name,
-            $legal_task->addonstatus->CAT,
-            $legal_task->addonstatus->Agent,
-            $legal_task->addonstatus->shift,
-            $legal_task->addonstatus->consignee,
-            $legal_task->addonstatus->refNo,
-            $legal_task->addonstatus->preCaseNo, // พึ่งเพิ่มเข้ามาใหม่
-            $legal_task->addonstatus->preCaseDate,
-            $legal_task->addonstatus->preCaseCloseDate,
-            $legal_task->addonstatus->caseNo,
-            $legal_task->addonstatus->caseDate,
-            $legal_task->addonstatus->caseCloseDate, // สิ้นสุด
-            $legal_task->addonstatus->importDate,
-            $legal_task->addonstatus->chequeNo,
-            $legal_task->addonstatus->chequeDate,
-            $legal_task->addonstatus->amount,
-            $legal_task->addonstatus->paidby,
-            $legal_task->addonstatus->chequeStatus,
-            $legal_task->addonstatus->dutyChequeNo,
-            $legal_task->addonstatus->dutyChequeDate,
-            $legal_task->addonstatus->dutyAmount,
-            $legal_task->addonstatus->dutyPaidby,
-            $legal_task->addonstatus->dutyChequeStatus,
-            $legal_task->addonstatus->causesOld,
-            $legal_task->addonstatus->causes,
-            $legal_task->addonstatus->othercause,
-            $legal_task->addonstatus->oldtariff,
-            $legal_task->addonstatus->newtariff,
-            $legal_task->addonstatus->oldrate,
-            $legal_task->addonstatus->newrate,
-            $legal_task->addonstatus->investigateBy,
-            $legal_task->addonstatus->remarkBy,
+            (!is_null($legal_task->ref_category) ? $legal_task->ref_category->name : ""), // เป็นอะไรไม่รู้
+            (!is_null($legal_task->ref_assigned_to->name) ? $legal_task->ref_assigned_to->name : ""),
+            (!is_null($legal_task->addonstatus->CAT) ? $legal_task->addonstatus->CAT : ""), 
+            (!is_null($legal_task->addonstatus->Agent) ? $legal_task->addonstatus->Agent : ""),
+            (!is_null($legal_task->addonstatus->shift) ? $legal_task->addonstatus->shift : ""),
+            (!is_null($legal_task->addonstatus->consignee) ? $legal_task->addonstatus->consignee : ""),
+            (!is_null($legal_task->addonstatus->refNo) ? $legal_task->addonstatus->refNo : ""),
+            (!is_null($legal_task->addonstatus->preCaseNo) ? $legal_task->addonstatus->preCaseNo : ""), // พึ่งเพิ่มเข้ามาใหม่
+            (!is_null($legal_task->addonstatus->preCaseDate) ? $legal_task->addonstatus->preCaseDate : ""),
+            (!is_null($legal_task->addonstatus->preCaseCloseDate) ? $legal_task->addonstatus->preCaseCloseDate : ""),
+            (!is_null($legal_task->addonstatus->caseNo) ? $legal_task->addonstatus->caseNo : ""),
+            (!is_null($legal_task->addonstatus->caseDate) ? $legal_task->addonstatus->caseDate : ""),
+            (!is_null($legal_task->addonstatus->caseCloseDate) ? $legal_task->addonstatus->caseCloseDate : ""), // สิ้นสุด
+            (!is_null($legal_task->addonstatus->importDate) ? $legal_task->addonstatus->importDate : ""),
+            (!is_null($legal_task->addonstatus->chequeNo) ? $legal_task->addonstatus->chequeNo : ""),
+            (!is_null($legal_task->addonstatus->chequeDate) ? $legal_task->addonstatus->chequeDate : ""),
+            (!is_null($legal_task->addonstatus->amount) ? $legal_task->addonstatus->amount : ""),
+            (!is_null($legal_task->addonstatus->paidby) ? $legal_task->addonstatus->paidby : ""),
+            (!is_null($legal_task->addonstatus->chequeStatus) ? $legal_task->addonstatus->chequeStatus : ""),
+            (!is_null($legal_task->addonstatus->dutyChequeNo) ? $legal_task->addonstatus->dutyChequeNo : ""),
+            (!is_null($legal_task->addonstatus->dutyChequeDate) ? $legal_task->addonstatus->dutyChequeDate : ""),
+            (!is_null($legal_task->addonstatus->dutyAmount) ? $legal_task->addonstatus->dutyAmount : ""),
+            (!is_null($legal_task->addonstatus->dutyPaidby) ? $legal_task->addonstatus->dutyPaidby : ""),
+            (!is_null($legal_task->addonstatus->dutyChequeStatus) ? $legal_task->addonstatus->dutyChequeStatus : ""),
+            (!is_null($legal_task->addonstatus->causesOld) ? $legal_task->addonstatus->causesOld : ""),
+            (!is_null($legal_task->addonstatus->causes) ? $legal_task->addonstatus->causes : ""),
+            (!is_null($legal_task->addonstatus->othercause) ? $legal_task->addonstatus->othercause : ""),
+            (!is_null($legal_task->addonstatus->oldtariff) ? $legal_task->addonstatus->oldtariff : ""),
+            (!is_null($legal_task->addonstatus->newtariff) ? $legal_task->addonstatus->newtariff : ""),
+            (!is_null($legal_task->addonstatus->oldrate) ? $legal_task->addonstatus->oldrate : ""),
+            (!is_null($legal_task->addonstatus->newrate) ? $legal_task->addonstatus->newrate : ""),
+            (!is_null($legal_task->addonstatus->investigateBy) ? $legal_task->addonstatus->investigateBy : ""),
+            (!is_null($legal_task->addonstatus->remarkBy) ? $legal_task->addonstatus->remarkBy : ""),
         ];
     }
 
