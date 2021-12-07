@@ -8,18 +8,18 @@ use DB;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\LegalReport;
-use App\Services\Exports\LegalTasksExport;
+use App\Services\Exports\LegalTasksOverFiveYearExport;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class LegalExportCommand extends Command
+class LegalOverExportCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'legal:export';
+    protected $signature = 'legal:over';
 
     /**
      * The console command description.
@@ -42,8 +42,8 @@ class LegalExportCommand extends Command
     {
         try
         {
-            $filepath = 'legal_report'.Carbon::now()->timestamp.'.xlsx';
-            (new LegalTasksExport)->store('legal'."\\".$filepath);
+            $filepath = 'legal_over_1_year_report'.Carbon::now()->timestamp.'.xlsx';
+            (new LegalTasksOverFiveYearExport)->store('legal'."\\".$filepath);
         }
         catch (Exception $ex){
             echo $ex;

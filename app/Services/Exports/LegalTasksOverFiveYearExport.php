@@ -10,30 +10,20 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
+class LegalTasksOverFiveYearExport implements FromCollection, WithHeadings, WithMapping
 {
 
     use Exportable;
 
     public function collection()
     {
-        if(Carbon::now()->endOfMonth()->toDateString() == Carbon::now()->toDateString()){
-            $legal_task = Task::with('ref_category', 'ref_assigned_to', 'ref_status')
-            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'status','addonstatus'])
-            ->where('created_at', '>=', Carbon::now()->startOfMonth()->toDateString())
-            ->where('created_at', '<=', Carbon::now()->endOfMonth()->toDateString())
-            ->get();
 
-            return $legal_task;
-        } else {
-            $legal_task = Task::with('ref_category', 'ref_assigned_to', 'ref_status')
+        $legal_task = Task::with('ref_category', 'ref_assigned_to', 'ref_status')
             ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'status','addonstatus'])
-            ->where('created_at', '>=', Carbon::now()->subYears(1)->toDateString())
-            ->where('created_at', '<=', Carbon::now()->toDateString())
+            ->whereIn('status', [3,4])
+            ->whereRaw('NOT (created_at > SUBDATE(CURRENT_DATE(),INTERVAL 1 YEAR) AND created_at <= CURRENT_DATE())')
             ->get();
-
-            return $legal_task;
-        }
+        return $legal_task;
     }
 
     public function map($legal_task): array

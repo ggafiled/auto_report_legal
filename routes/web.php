@@ -23,10 +23,9 @@ Route::get('/test', function () {
 
 Route::get('/report', function () {
     $legal_task = Task::with('ref_category', 'ref_assigned_to', 'ref_status')
-            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
-            ->where('created_at', '>=', Carbon::now()->subYears(1)->toDateString())
-            ->where('created_at', '<=', Carbon::now()->toDateString())
-            ->where('category', '=', 0)
-            ->first();
+    ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'status','addonstatus'])
+    ->whereIn('status', [3,4])
+    ->whereRaw('NOT (created_at > SUBDATE(CURRENT_DATE(),INTERVAL 1 YEAR) AND created_at <= CURRENT_DATE())')
+    ->paginate(100);
     return $legal_task;
 });
