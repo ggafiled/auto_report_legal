@@ -47,13 +47,15 @@ class LegalExportCommand extends Command
     {
         try
         {
-            $filepath = 'legal\legal_report'.Carbon::now()->timestamp.'.xlsx';
-            (new LegalTasksExport)->store($filepath);
+            $filepath = 'legal_report'.Carbon::now()->timestamp.'.xlsx';
+            (new LegalTasksExport)->store('legal'."\\".$filepath);
         }
-        catch (Exception $ex){}
+        catch (Exception $ex){
+            echo $ex;
+        }
         finally
         {
-            Mail::to("nattapol.krobklang@dhl.com")->send(new LegalReport($filepath));
+            Mail::to(explode(',', env('MAIL_LEGAL_TEAM')))->send(new LegalReport($filepath));
         }
     }
 }

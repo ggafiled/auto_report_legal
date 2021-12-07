@@ -30,6 +30,11 @@ class Task extends Model
         'updatedBy',
         'isDeleted'];
 
+    public function ref_status()
+    {
+        return $this->hasOne('App\Models\Status', 'statusId', 'status');
+    }
+
     public function ref_category()
     {
         return $this->hasOne('App\Models\Category', 'categoryId', 'category');

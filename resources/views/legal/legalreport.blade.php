@@ -189,7 +189,7 @@ readability */
                                         <h1 style="font-size: 25px; line-height:30px; color: #333333; font-weight:
                                             normal; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; margin:
                                             0 0 10px;">Hey Legal Team,</h1>
-                                        <p>Automatically process to export legal report,</p>
+                                        <p>Automatically process to export legal report, From temporary system.</p>
                                     </td>
                                 </tr>
                             </tbody>

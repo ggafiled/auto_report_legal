@@ -18,16 +18,16 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
     public function collection()
     {
         if(Carbon::now()->endOfMonth()->toDateString() == Carbon::now()->toDateString()){
-            $legal_task = Task::with('ref_cats', 'ref_assigned_to')
-            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
+            $legal_task = Task::with('ref_category', 'ref_assigned_to', 'ref_status')
+            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'status','addonstatus'])
             ->where('created_at', '>=', Carbon::now()->startOfMonth()->toDateString())
             ->where('created_at', '<=', Carbon::now()->endOfMonth()->toDateString())
             ->get();
 
             return $legal_task;
         } else {
-            $legal_task = Task::with('ref_cats', 'ref_assigned_to')
-            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'addonstatus'])
+            $legal_task = Task::with('ref_category', 'ref_assigned_to', 'ref_status')
+            ->select(['id', 'title', 'description','created_at', 'last_updated', 'category', 'assigned_to', 'status','addonstatus'])
             ->where('created_at', '>=', Carbon::now()->subYears(1)->toDateString())
             ->where('created_at', '<=', Carbon::now()->toDateString())
             ->get();
@@ -41,10 +41,11 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
         return [
             $legal_task->id,
             $legal_task->title,
-            $legal_task->description,
+            (!is_null($legal_task->ref_status->statusName) ? $legal_task->ref_status->statusName : ""),
+            $legal_task->ref_status->statusName." - ".$legal_task->description,
             $legal_task->created_at,
             $legal_task->last_updated,
-            $legal_task->ref_assigned_to->name, // เป็นอะไรไม่รู้
+            (!is_null($legal_task->ref_category) ? $legal_task->ref_category->name : ""), // เป็นอะไรไม่รู้
             $legal_task->ref_assigned_to->name,
             $legal_task->addonstatus->CAT,
             $legal_task->addonstatus->Agent,
@@ -85,6 +86,7 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
         return [
             'Id',
             'Title/HWB',
+            'Status',
             'Description',
             'Created Date',
             'Last Update',
