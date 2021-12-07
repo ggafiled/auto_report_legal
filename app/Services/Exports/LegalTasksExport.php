@@ -46,40 +46,6 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
             $legal_task->created_at,
             $legal_task->last_updated,
             (!is_null($legal_task->ref_category) ? $legal_task->ref_category->name : ""), // เป็นอะไรไม่รู้
-<<<<<<< HEAD
-            $legal_task->ref_assigned_to->name,
-            $legal_task->addonstatus->CAT,
-            $legal_task->addonstatus->Agent,
-            $legal_task->addonstatus->shift,
-            $legal_task->addonstatus->consignee,
-            $legal_task->addonstatus->refNo,
-            $legal_task->addonstatus->preCaseNo, // พึ่งเพิ่มเข้ามาใหม่
-            $legal_task->addonstatus->preCaseDate,
-            $legal_task->addonstatus->preCaseCloseDate,
-            $legal_task->addonstatus->caseNo,
-            $legal_task->addonstatus->caseDate,
-            $legal_task->addonstatus->caseCloseDate, // สิ้นสุด
-            $legal_task->addonstatus->importDate,
-            $legal_task->addonstatus->chequeNo,
-            $legal_task->addonstatus->chequeDate,
-            $legal_task->addonstatus->amount,
-            $legal_task->addonstatus->paidby,
-            $legal_task->addonstatus->chequeStatus,
-            $legal_task->addonstatus->dutyChequeNo,
-            $legal_task->addonstatus->dutyChequeDate,
-            $legal_task->addonstatus->dutyAmount,
-            $legal_task->addonstatus->dutyPaidby,
-            $legal_task->addonstatus->dutyChequeStatus,
-            $legal_task->addonstatus->causesOld,
-            $legal_task->addonstatus->causes,
-            $legal_task->addonstatus->othercause,
-            $legal_task->addonstatus->oldtariff,
-            $legal_task->addonstatus->newtariff,
-            $legal_task->addonstatus->oldrate,
-            $legal_task->addonstatus->newrate,
-            $legal_task->addonstatus->investigateBy,
-            $legal_task->addonstatus->remarkBy,
-=======
             (!is_null($legal_task->ref_assigned_to->name) ? $legal_task->ref_assigned_to->name : ""),
             (!is_null($legal_task->addonstatus->CAT) ? $legal_task->addonstatus->CAT : ""), 
             (!is_null($legal_task->addonstatus->Agent) ? $legal_task->addonstatus->Agent : ""),
@@ -112,7 +78,6 @@ class LegalTasksExport implements FromCollection, WithHeadings, WithMapping
             (!is_null($legal_task->addonstatus->newrate) ? $legal_task->addonstatus->newrate : ""),
             (!is_null($legal_task->addonstatus->investigateBy) ? $legal_task->addonstatus->investigateBy : ""),
             (!is_null($legal_task->addonstatus->remarkBy) ? $legal_task->addonstatus->remarkBy : ""),
->>>>>>> 8d4a358bd4c503b99b95d77a021fca5169814748
         ];
     }
 
